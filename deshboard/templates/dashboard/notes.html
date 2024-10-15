@@ -1,0 +1,48 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <div class="container">
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary mb-3">
+                Back to Home
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        {% for nt in notes %}
+        <div class="col-md-3">
+            <a href="{% url "notedetail" nt.id %}">
+                <div class="card">
+                    <div class="card-header">{{nt.title}}</div>
+                    <div class="card-body">{{nt.description|slice:"0:100"}}</div>
+                    <div class="card-footer mt-auto "><a href="{% url 'deletenote' nt.id%}">
+                        <i class="fa fa-trash fa-2x"></i></a>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<br><br>
+
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Create Notes</legend>
+        </fieldset>
+        {{form|crispy}}
+        <div class="form-group">
+            <button href="" class="btn btn-outline-info" type="submit">
+                Create
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

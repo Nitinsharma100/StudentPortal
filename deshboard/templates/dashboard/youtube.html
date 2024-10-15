@@ -1,0 +1,47 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-end">
+        <a href="{% url 'home' %}" class="btn btn-outline-secondary mb-3">
+            Back to Home
+        </a>
+    </div>
+</div>
+<section class='text-center container'>
+    <h2 class="mt-5 mb-4">Search Videos on YouTube</h2>
+    <p class="mb-4">Search for videos and select any video to open it in YouTube.</p>
+    <form action="" method="post" class="mb-4">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input class="btn btn-danger" type="submit" value="Submit">
+    </form>
+
+    <div class="row">
+        {% for result in results %}
+        <div class="col-md-4 mb-4">
+            <a href="{{ result.link }}" target="_blank" class="text-decoration-none">
+                <div class="card border-secondary h-100 shadow-sm">
+                    <img src="{{ result.thumbnails }}" class="card-img-top" alt="{{ result.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ result.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ result.channel }}</h6>
+                        <p class="card-text">{{ result.description|truncatewords:15 }}</p>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">{{ result.duration }}</small>
+                            <small class="text-muted">{{ result.views }}</small>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2">
+                            <small class="text-muted">{{ result.published }}</small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock content %}
